@@ -1,0 +1,17 @@
+*{
+    margin: 0;
+    font-family: monospace;
+    background-color: #292929;
+    color: #FFF2AE;
+}
+
+header{
+    margin: 20px 0;
+    padding-bottom: 20px;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px dotted #FFF2AE;
+}
