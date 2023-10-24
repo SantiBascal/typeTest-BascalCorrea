@@ -2,6 +2,9 @@
     margin: 0;
     font-family: monospace;
     background-color: #292929;
+}
+
+body{
     color: #FFF2AE;
 }
 
@@ -26,10 +29,26 @@ main{
 
 .textContainer{
     width: 750px;
-    height: 350px;
-    background-color: #999;
+    height: 140px;
     font-size: 20px;
     line-height: 35px;
     overflow: hidden;
     
 }
+
+
+.word{
+    display: inline-block;
+    margin: 0 5px;
+    color: #5F5D4E;
+}
+
+
+.letra .correct{
+    color: #FFF2AE;
+}
+
+.letra .incorrect{
+    color: #E77373;
+}
+
