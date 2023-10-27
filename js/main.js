@@ -51,29 +51,38 @@ function wps() {
 function gameOver() {
     clearInterval(window.timer);
 
-    if(!document.getElementById('game').className.includes('over')){
+    if (!document.getElementById('game').className.includes('over')) {
 
         addClass(document.getElementById('game'), 'over')
 
         let palabrasCorrectas = wps()
         let tiempo = parseInt(document.querySelector('.seconds').innerHTML)
-    
+
         let palabrasPorMinuto = Math.round((palabrasCorrectas / tiempo) * 60)
-        let record = 'record Wpm: ' + palabrasPorMinuto;
+        
 
         let recordGuardado = localStorage.getItem('record')
 
 
 
-        if (palabrasPorMinuto > bestRecord){
+        if (palabrasPorMinuto > bestRecord) {
 
 
             bestRecord = palabrasPorMinuto;
             localStorage.setItem('record', bestRecord)
             document.querySelector('#gameInfo .record').innerHTML = 'record Wpm: ' + bestRecord;
-            
+
+            Toastify({
+
+                text: "New Record!",
+                
+                duration: 3000,
+
+
+                }).showToast();
+
         }
-        
+
 
 
         if (palabrasPorMinuto !== Infinity && palabrasPorMinuto < recordGuardado) {
@@ -82,7 +91,7 @@ function gameOver() {
             wpmMade.innerHTML = 'wpm: ' + palabrasPorMinuto
             document.querySelector('#gameInfo').appendChild(wpmMade)
             document.querySelector('#gameInfo .record').innerHTML = 'record Wpm: ' + recordGuardado;
-            
+
         }
     }
 
@@ -97,14 +106,14 @@ function newGame() {
     window.timer = null
     window.gameStart = null
 
-    if(document.getElementById('game').className.includes('over')){
+    if (document.getElementById('game').className.includes('over')) {
         removeClass(document.querySelector('#game'), 'over')
 
     }
 
 
     let recordGuardado = localStorage.getItem('record');
-    if(recordGuardado){
+    if (recordGuardado) {
         bestRecord = parseInt(recordGuardado)
         document.querySelector('#gameInfo .record').innerHTML = `record Wpm: ${bestRecord}`
     }
@@ -258,9 +267,13 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
 document.querySelector('button').addEventListener('click', () => {
     gameOver()
     newGame()
-
     let wpmNow = document.querySelector('.thisTest')
-    document.querySelector('#gameInfo').removeChild(wpmNow)
+
+    if (wpmNow) {
+        document.querySelector('#gameInfo').removeChild(wpmNow)
+
+    }
+
 
 })
 

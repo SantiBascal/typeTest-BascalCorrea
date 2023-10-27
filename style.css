@@ -128,6 +128,13 @@ svg {
 svg:hover{
     background-color: #FFF2AE;
     fill: #4C4C4C;
+    
 }
 
+.toastify{
+    box-shadow: none;
+    background: #4C4C4C;
+    color: #FFF2AE;
+    font-size: 15px;
+}
 
