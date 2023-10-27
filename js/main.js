@@ -1,7 +1,8 @@
 let container = document.querySelector('.textContainer');
 window.timer = null
 window.gameStart = null
-window.palabrasTotales = 0
+
+
 
 function randomWord(wordArray, wordNum) {
     let randomGenerate = Math.floor(Math.random() * wordNum);
@@ -23,9 +24,36 @@ function divCreator(words) {
     return `<div class="word"><span class="letra">${words.split('').join('</span><span class="letra">')}</span></div>`;
 }
 
+
+function wps(){
+    let palabras = [...document.querySelectorAll('.word')];
+    let ultimaPalabra = document.querySelector('.letra.ultima');
+    let indexUltimaPalabra = palabras.indexOf(ultimaPalabra);
+    let palabrasEscritas = palabras.slice(0, indexUltimaPalabra);
+    let palabrasCorrectas = palabrasEscritas.filter(word => {
+        let letras = [...word.children];
+        let letrasIncorrectas = letras.filter(letra => letra.className.includes('incorrect'))
+        let letrasCorrectas = letras.filter(letra => letra.className.includes('correct'))
+        return letrasIncorrectas.length === 0 && letrasCorrectas.length === letras.length;
+
+    })
+
+    return palabrasCorrectas.length
+}
+
+
 function gameOver(){
     clearInterval(window.timer);
     addClass(document.getElementById('game'), 'over')
+
+    let palabrasCorrectas = wps()
+    let tiempo = parseInt(document.querySelector('.seconds').innerHTML)
+    
+    let palabrasPorMinuto = Math.round((palabrasCorrectas / tiempo) * 60)
+
+
+
+    document.querySelector('#gameInfo .record').innerHTML = `record Wpm: ${palabrasPorMinuto}`
 }
 
 
