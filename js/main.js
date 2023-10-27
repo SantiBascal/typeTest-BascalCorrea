@@ -60,10 +60,28 @@ function gameOver() {
     
         let palabrasPorMinuto = Math.round((palabrasCorrectas / tiempo) * 60)
         let record = 'record Wpm: ' + palabrasPorMinuto;
-        
-        if (palabrasPorMinuto !== Infinity) {
 
-            document.querySelector('#gameInfo .record').innerHTML = record
+        let recordGuardado = localStorage.getItem('record')
+
+
+
+        if (palabrasPorMinuto > bestRecord){
+
+
+            bestRecord = palabrasPorMinuto;
+            localStorage.setItem('record', bestRecord)
+            document.querySelector('#gameInfo .record').innerHTML = 'record Wpm: ' + bestRecord;
+            
+        }
+        
+
+
+        if (palabrasPorMinuto !== Infinity && palabrasPorMinuto < recordGuardado) {
+            let wpmMade = document.createElement('p')
+            addClass(wpmMade, 'thisTest')
+            wpmMade.innerHTML = 'wpm: ' + palabrasPorMinuto
+            document.querySelector('#gameInfo').appendChild(wpmMade)
+            document.querySelector('#gameInfo .record').innerHTML = 'record Wpm: ' + recordGuardado;
             
         }
     }
@@ -84,6 +102,12 @@ function newGame() {
 
     }
 
+
+    let recordGuardado = localStorage.getItem('record');
+    if(recordGuardado){
+        bestRecord = parseInt(recordGuardado)
+        document.querySelector('#gameInfo .record').innerHTML = `record Wpm: ${bestRecord}`
+    }
 
 
     fetch('data/words.json')
@@ -234,6 +258,9 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
 document.querySelector('button').addEventListener('click', () => {
     gameOver()
     newGame()
+
+    let wpmNow = document.querySelector('.thisTest')
+    document.querySelector('#gameInfo').removeChild(wpmNow)
 
 })
 
