@@ -89,6 +89,15 @@ main{
     display: none;
 }
 
+#game.over .textContainer{
+    filter: blur(0px);
+    opacity: .5;
+}
+
+#game.over .gameFocus{
+    display: none;
+}
+
 .word{
     display: inline-block;
     margin: 0 5px;
@@ -103,4 +112,6 @@ main{
 .letra.incorrect{
     color: #E77373;
 }
+
+
 

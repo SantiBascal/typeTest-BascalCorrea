@@ -1,7 +1,7 @@
 let container = document.querySelector('.textContainer');
 window.timer = null
 window.gameStart = null
-
+window.palabrasTotales = 0
 
 function randomWord(wordArray, wordNum) {
     let randomGenerate = Math.floor(Math.random() * wordNum);
@@ -23,6 +23,10 @@ function divCreator(words) {
     return `<div class="word"><span class="letra">${words.split('').join('</span><span class="letra">')}</span></div>`;
 }
 
+function gameOver(){
+    clearInterval(window.timer);
+    addClass(document.getElementById('game'), 'over')
+}
 
 
 
@@ -51,8 +55,7 @@ fetch('data/words.json')
         addClass(classWord, 'current');
         addClass(classLetra, 'current');
 
-        addClass(container.lastChild.lastChild, 'ultima');
-
+        addClass(container.lastChild.lastChild, 'ultima')
         window.timer = null
 
 
@@ -76,6 +79,9 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
     let primerLetra = letraActual === wordActual.firstChild
     let letraExtra = wordActual.lastChild
 
+    if(document.querySelector('#game.over')){
+        return;
+    }
 
     if(!window.timer && esLetra){
         window.timer = setInterval(()=>{
@@ -87,7 +93,7 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
             let timeActual = (new Date()).getTime();
             let msPasado = timeActual - window.gameStart;
             let segundos = Math.round(msPasado / 1000);
-            document.querySelector('.seconds').innerHTML = segundos + ''
+            document.querySelector('.seconds').innerHTML = segundos + 's'
         }, 1000)
     }
 
@@ -99,12 +105,17 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
                 addClass(letraActual.nextSibling, 'current')
 
             }
+            if(letraActual.classList.contains('ultima')){
+                gameOver()
+            }
         } else {
             let letraIncorrecta = document.createElement('span');
             letraIncorrecta.innerHTML = keyPress
             letraIncorrecta.className = 'letra incorrect extra'
             wordActual.appendChild(letraIncorrecta)
         }
+
+
     }
 
     if (espacio) {
@@ -125,6 +136,7 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
         }
 
         addClass(wordActual.nextElementSibling.firstChild, 'current')
+
 
     }
 
@@ -160,7 +172,7 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
 
 
     }
-
+ 
 })
 
 
