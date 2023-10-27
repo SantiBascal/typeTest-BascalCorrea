@@ -41,21 +41,23 @@ main{
 }
 
 
-.record{
+#gameInfo{
     width: 750px;
-    margin: 50px 0;
-    text-align: center;
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    margin: 0 0 20px;
 }
 
-.record p{
-    font-size: 19px;
-
+#gameInfo .record{
+    display: flex;
 }
 
 #game{
     position: relative;
     width: 750px;
-    height: 140px;
+    height: 175px;
     font-size: 20px;
     line-height: 35px;
     overflow: hidden;

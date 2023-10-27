@@ -1,5 +1,6 @@
 let container = document.querySelector('.textContainer');
-
+window.timer = null
+window.gameStart = null
 
 
 function randomWord(wordArray, wordNum) {
@@ -37,7 +38,7 @@ fetch('data/words.json')
 
         container.innerHTML = '';
 
-        for (let x = 0; x < 50; x += 1) {
+        for (let x = 0; x < 35; x += 1) {
 
             container.innerHTML += divCreator(randomWord(wordArray, wordsNum));
 
@@ -49,6 +50,10 @@ fetch('data/words.json')
 
         addClass(classWord, 'current');
         addClass(classLetra, 'current');
+
+        addClass(container.lastChild.lastChild, 'ultima');
+
+        window.timer = null
 
 
 
@@ -70,6 +75,21 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
     let borrar = keyPress === 'Backspace'
     let primerLetra = letraActual === wordActual.firstChild
     let letraExtra = wordActual.lastChild
+
+
+    if(!window.timer && esLetra){
+        window.timer = setInterval(()=>{
+
+            if(!window.gameStart){
+                window.gameStart = (new Date()).getTime();
+            }
+
+            let timeActual = (new Date()).getTime();
+            let msPasado = timeActual - window.gameStart;
+            let segundos = Math.round(msPasado / 1000);
+            document.querySelector('.seconds').innerHTML = segundos + ''
+        }, 1000)
+    }
 
     if (esLetra) {
         if (letraActual) {
