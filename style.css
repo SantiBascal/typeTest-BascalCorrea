@@ -27,7 +27,33 @@ main{
     justify-content: center;
 }
 
-.textContainer{
+
+.info{
+    width: 750px;
+    margin: 60px 0;
+    text-align: center;
+}
+
+.info p{
+    margin: 25px;
+    font-size: 15px;
+    color: #968D5D;
+}
+
+
+.record{
+    width: 750px;
+    margin: 50px 0;
+    text-align: center;
+}
+
+.record p{
+    font-size: 19px;
+
+}
+
+#game{
+    position: relative;
     width: 750px;
     height: 140px;
     font-size: 20px;
@@ -35,7 +61,31 @@ main{
     overflow: hidden;
     
 }
+.gameFocus{
+    display: block;
+    position: absolute;
+    inset: 0;
+    height: 0;
+    font-size: 23px;
+    text-align: center;
+    margin-top: 54px;
+}
 
+.textContainer{
+    filter: blur(3px);   
+}
+
+#game:focus{
+    outline: 0;
+}
+
+#game:focus .textContainer{
+    filter: blur(0);
+}
+
+#game:focus .gameFocus{
+    display: none;
+}
 
 .word{
     display: inline-block;
@@ -44,11 +94,11 @@ main{
 }
 
 
-.letra .correct{
+.letra.correct{
     color: #FFF2AE;
 }
 
-.letra .incorrect{
+.letra.incorrect{
     color: #E77373;
 }
 
