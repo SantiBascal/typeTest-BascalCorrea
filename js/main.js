@@ -67,6 +67,9 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
     let letraEsperada = letraActual?.innerHTML || ' ';
     let esLetra = keyPress.length === 1 && keyPress !== ' '
     let espacio = keyPress === ' '
+    let borrar = keyPress === 'Backspace'
+    let primerLetra = letraActual === wordActual.firstChild
+    let letraExtra = wordActual.lastChild
 
     if (esLetra) {
         if (letraActual) {
@@ -102,6 +105,39 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
         }
 
         addClass(wordActual.nextElementSibling.firstChild, 'current')
+
+    }
+
+    if (borrar) {
+        if (letraActual && primerLetra) {       
+            removeClass(wordActual, 'current')
+            addClass(wordActual.previousSibling, 'current')
+            removeClass(letraActual, 'current')
+            addClass(wordActual.previousSibling.lastChild, 'current')
+            removeClass(wordActual.previousSibling.lastChild, 'incorrect')
+            removeClass(wordActual.previousSibling.lastChild, 'correct')
+
+
+        }
+
+        if (letraActual && !primerLetra) {
+            removeClass(letraActual, 'current')
+            addClass(letraActual.previousSibling, 'current')
+            removeClass(letraActual.previousSibling, 'incorrect')
+            removeClass(letraActual.previousSibling, 'correct')
+
+        }
+        if (!letraActual) {
+            addClass(wordActual.lastChild, 'current')
+            removeClass(wordActual.lastChild, 'incorrect')
+            removeClass(wordActual.lastChild, 'correct')
+
+        }
+        if (letraExtra && letraExtra.classList.contains('extra')) {
+            wordActual.removeChild(letraExtra)
+
+        }
+
 
     }
 
