@@ -2,6 +2,8 @@ let container = document.querySelector('.textContainer');
 window.timer = null
 window.gameStart = null
 
+let bestRecord = 0
+
 
 
 function randomWord(wordArray, wordNum) {
@@ -9,6 +11,10 @@ function randomWord(wordArray, wordNum) {
     return wordArray[randomGenerate];
 }
 
+
+function restartTimer() {
+    document.querySelector('#gameInfo .seconds').innerHTML = '0s'
+}
 
 function addClass(item, addClass) {
     item.className += ' ' + addClass;
@@ -25,7 +31,7 @@ function divCreator(words) {
 }
 
 
-function wps(){
+function wps() {
     let palabras = [...document.querySelectorAll('.word')];
     let ultimaPalabra = document.querySelector('.letra.ultima');
     let indexUltimaPalabra = palabras.indexOf(ultimaPalabra);
@@ -42,58 +48,80 @@ function wps(){
 }
 
 
-function gameOver(){
+function gameOver() {
     clearInterval(window.timer);
-    addClass(document.getElementById('game'), 'over')
 
-    let palabrasCorrectas = wps()
-    let tiempo = parseInt(document.querySelector('.seconds').innerHTML)
+    if(!document.getElementById('game').className.includes('over')){
+
+        addClass(document.getElementById('game'), 'over')
+
+        let palabrasCorrectas = wps()
+        let tiempo = parseInt(document.querySelector('.seconds').innerHTML)
     
-    let palabrasPorMinuto = Math.round((palabrasCorrectas / tiempo) * 60)
+        let palabrasPorMinuto = Math.round((palabrasCorrectas / tiempo) * 60)
+        let record = 'record Wpm: ' + palabrasPorMinuto;
+        
+        if (palabrasPorMinuto !== Infinity) {
 
+            document.querySelector('#gameInfo .record').innerHTML = record
+            
+        }
+    }
 
-
-    document.querySelector('#gameInfo .record').innerHTML = `record Wpm: ${palabrasPorMinuto}`
 }
 
 
 
 
+function newGame() {
 
-fetch('data/words.json')
-    .then((res) => {
-        return res.json();
-    })
-    .then((words) => {
-        let wordArray = words.palabras;
-        let wordsNum = wordArray.length;
+    restartTimer();
+    window.timer = null
+    window.gameStart = null
 
-        container.innerHTML = '';
+    if(document.getElementById('game').className.includes('over')){
+        removeClass(document.querySelector('#game'), 'over')
 
-        for (let x = 0; x < 35; x += 1) {
-
-            container.innerHTML += divCreator(randomWord(wordArray, wordsNum));
-
-        }
-
-
-        let classWord = document.querySelector('.word');
-        let classLetra = document.querySelector('.letra');
-
-        addClass(classWord, 'current');
-        addClass(classLetra, 'current');
-
-        addClass(container.lastChild.lastChild, 'ultima')
-        window.timer = null
+    }
 
 
 
-    })
+    fetch('data/words.json')
+        .then((res) => {
+            return res.json();
+        })
+        .then((words) => {
+            let wordArray = words.palabras;
+            let wordsNum = wordArray.length;
 
-    //CAMBIAR EL CATCH POR UN SWEETALERT O ALGO
-    .catch((err) => {
-        console.log(err);
-    })
+            container.innerHTML = '';
+
+            for (let x = 0; x < 35; x += 1) {
+
+                container.innerHTML += divCreator(randomWord(wordArray, wordsNum));
+
+            }
+
+
+            let classWord = document.querySelector('.word');
+            let classLetra = document.querySelector('.letra');
+
+            addClass(classWord, 'current');
+            addClass(classLetra, 'current');
+
+            addClass(container.lastChild.lastChild, 'ultima')
+            window.timer = null
+
+
+
+        })
+
+        //CAMBIAR EL CATCH POR UN SWEETALERT O ALGO
+        .catch((err) => {
+            console.log(err);
+        })
+}
+
 
 
 document.querySelector('#game').addEventListener('keyup', (evt) => {
@@ -107,14 +135,14 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
     let primerLetra = letraActual === wordActual.firstChild
     let letraExtra = wordActual.lastChild
 
-    if(document.querySelector('#game.over')){
+    if (document.querySelector('#game.over')) {
         return;
     }
 
-    if(!window.timer && esLetra){
-        window.timer = setInterval(()=>{
+    if (!window.timer && esLetra) {
+        window.timer = setInterval(() => {
 
-            if(!window.gameStart){
+            if (!window.gameStart) {
                 window.gameStart = (new Date()).getTime();
             }
 
@@ -133,7 +161,7 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
                 addClass(letraActual.nextSibling, 'current')
 
             }
-            if(letraActual.classList.contains('ultima')){
+            if (letraActual.classList.contains('ultima')) {
                 gameOver()
             }
         } else {
@@ -169,7 +197,7 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
     }
 
     if (borrar) {
-        if (letraActual && primerLetra) {       
+        if (letraActual && primerLetra) {
             removeClass(wordActual, 'current')
             addClass(wordActual.previousSibling, 'current')
             removeClass(letraActual, 'current')
@@ -200,11 +228,17 @@ document.querySelector('#game').addEventListener('keyup', (evt) => {
 
 
     }
- 
+
+})
+
+document.querySelector('button').addEventListener('click', () => {
+    gameOver()
+    newGame()
+
 })
 
 
-
+newGame()
 
 
 

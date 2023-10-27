@@ -113,5 +113,21 @@ main{
     color: #E77373;
 }
 
+.newGamebtn button{
+    border: none;
+    outline: none;
+}
+
+svg {
+    fill: #fff2ae;
+    background-color: #4C4C4C;
+    padding: 15px 20px;
+}
+
+
+svg:hover{
+    background-color: #FFF2AE;
+    fill: #4C4C4C;
+}
 
 
